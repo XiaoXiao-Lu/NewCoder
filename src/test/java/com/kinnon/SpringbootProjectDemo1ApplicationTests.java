@@ -3,6 +3,7 @@ package com.kinnon;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.kinnon.domain.User;
 import com.kinnon.mapper.DiscussPostMapper;
+import com.kinnon.mapper.UserMapper;
 import com.kinnon.service.DiscussPostService;
 import com.kinnon.service.UserService;
 import com.kinnon.service.impl.DiscussPostServiceImpl;
@@ -34,5 +35,17 @@ class SpringbootProjectDemo1ApplicationTests {
         System.out.println(discussPostMapper.selectDiscussPostRows(0));
     }
 
+
+    @Autowired
+    private UserMapper userMapper;
+    @Test
+    public void test3(){
+        User user = new User();
+        user.setUsername("kin22non");
+        user.setPassword("9d999");
+        user.setStatus(0);
+        int insert = userMapper.insertUser(user);
+        System.out.println(user.getId());
+    }
 
 }

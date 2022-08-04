@@ -1,3 +1,7 @@
+server:
+  servlet:
+    context-path: /newcoder
+
 
 spring:
   thymeleaf:
@@ -26,4 +30,8 @@ logging:
   level:
     root: info
 
+
+newcoder:
+  path:
+    domain: "http://localhost:8080"
 

@@ -18,9 +18,25 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,username,password,
+        username,password,
         salt,email,type,
         status,activation_code,header_url,
         create_time
     </sql>
+
+    <insert id="insertUser" parameterType="User" keyProperty="id">
+        insert into user (<include refid="Base_Column_List"></include>)
+        values(#{username}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode}, #{headerUrl}, #{createTime})
+    </insert>
+
+    <select id="selectByUsername" resultType="com.kinnon.domain.User">
+        select <include refid="Base_Column_List"></include>
+        from user where username = #{username}
+    </select>
+    <select id="selectByEmail" resultType="com.kinnon.domain.User">
+        select <include refid="Base_Column_List"></include>
+        from user where email = #{email}
+    </select>
+
+
 </mapper>

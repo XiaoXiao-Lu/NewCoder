@@ -6,6 +6,7 @@ import com.kinnon.domain.User;
 import com.kinnon.mapper.DiscussPostMapper;
 import com.kinnon.service.DiscussPostService;
 import com.kinnon.service.UserService;
+
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,7 +36,6 @@ public class HomeController {
     public String getIndexPage(Model model, Page page){
         page.setRows(discussdPostService.getDiscussPostRows(0));
         page.setPath("/index");
-
         List<DiscussPost> disCussPosts = discussdPostService.getDisCussPosts(0, page.getOffset(), page.getLimit());
         List<Map<String,Object>> disCussPostsMapList = new ArrayList<>();
         if (disCussPosts != null ){
