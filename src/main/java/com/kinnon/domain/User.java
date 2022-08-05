@@ -64,6 +64,14 @@ public class User implements Serializable {
      */
     private Date createTime;
 
+    public User() {
+    }
+
+    public User(Integer id, Integer status) {
+        this.id = id;
+        this.status = status;
+    }
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 

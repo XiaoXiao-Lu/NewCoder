@@ -1,8 +1,10 @@
 package com.kinnon;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.kinnon.domain.LoginTicket;
 import com.kinnon.domain.User;
 import com.kinnon.mapper.DiscussPostMapper;
+import com.kinnon.mapper.LoginTicketMapper;
 import com.kinnon.mapper.UserMapper;
 import com.kinnon.service.DiscussPostService;
 import com.kinnon.service.UserService;
@@ -46,6 +48,18 @@ class SpringbootProjectDemo1ApplicationTests {
         user.setStatus(0);
         int insert = userMapper.insertUser(user);
         System.out.println(user.getId());
+    }
+
+    @Autowired
+    private LoginTicketMapper loginTicketMapper;
+    @Test
+    public void test4(){
+        LoginTicket loginTicket = new LoginTicket();
+        loginTicket.setUserId(3);
+        loginTicket.setTicket("1232");
+        loginTicket.setStatus(0);
+        int insert = loginTicketMapper.insert(loginTicket);
+
     }
 
 }

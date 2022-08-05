@@ -1,3 +1,5 @@
+var context_path = "/newcoder"
+
 window.alert = function(message) {
 	if(!$(".alert-box").length) {
 		$("body").append(

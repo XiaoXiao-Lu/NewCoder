@@ -16,4 +16,5 @@
         id,user_id,ticket,
         status,expired
     </sql>
+
 </mapper>
