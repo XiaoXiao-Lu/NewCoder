@@ -3,6 +3,7 @@ package com.kinnon.mapper;
 import com.kinnon.domain.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author Thinkpad
@@ -12,6 +13,12 @@ import org.apache.ibatis.annotations.Mapper;
 */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
+
+    public User selectByUsername(@Param("username") String username);
+
+    public User selectByEmail(@Param("email") String email);
+
+    public int insertUser(User user);
 
 }
 
