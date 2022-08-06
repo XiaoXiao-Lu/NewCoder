@@ -9,6 +9,7 @@ import com.kinnon.mapper.UserMapper;
 import com.kinnon.service.DiscussPostService;
 import com.kinnon.service.UserService;
 import com.kinnon.service.impl.DiscussPostServiceImpl;
+import com.kinnon.util.SensitiveFilter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -60,6 +61,15 @@ class SpringbootProjectDemo1ApplicationTests {
         loginTicket.setStatus(0);
         int insert = loginTicketMapper.insert(loginTicket);
 
+    }
+
+    @Autowired
+    private SensitiveFilter sensitiveFilter;
+    @Test
+    public void test5(){
+        String text = "你好，我是一个小小嫖≌娼的菜鸟,赌博";
+        String result = sensitiveFilter.fileter(text);
+        System.out.println(result);
     }
 
 }
