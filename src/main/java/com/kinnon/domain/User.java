@@ -72,6 +72,11 @@ public class User implements Serializable {
         this.status = status;
     }
 
+    public User(Integer id, String headerUrl) {
+        this.id = id;
+        this.headerUrl = headerUrl;
+    }
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 

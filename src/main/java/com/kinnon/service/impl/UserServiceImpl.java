@@ -31,7 +31,7 @@ import java.util.Random;
  */
 @Service
 @Transactional
-public class UserServiceImpl extends ServiceImpl<UserMapper, User>
+public  class UserServiceImpl extends ServiceImpl<UserMapper, User>
         implements UserService, NewCoderConstant {
 
     @Autowired
@@ -176,6 +176,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     public LoginTicket findLoginTicket(String ticket) {
         return loginTicketMapper.selectByTicket(ticket);
+    }
+
+    @Override
+    public int updateHeader(int userId, String headerUrl) {
+        int i = userMapper.updateById(new User(userId, headerUrl));
+        return i;
     }
 
 

@@ -23,6 +23,8 @@ public interface UserService extends IService<User> {
 
     public LoginTicket findLoginTicket(String ticket) ;
 
+    public int updateHeader(int userId, String headerUrl);
+
 
 
 }

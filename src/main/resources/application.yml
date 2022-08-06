@@ -35,4 +35,7 @@ logging:
 newcoder:
   path:
     domain: "http://localhost:8080"
+    upload: d://work/data/upload                      #图片上传路径
+
+
 
