@@ -20,6 +20,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     public int insertUser(User user);
 
+
 }
 
 

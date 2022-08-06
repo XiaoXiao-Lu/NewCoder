@@ -5,11 +5,11 @@ import com.kinnon.domain.User;
 import com.kinnon.service.UserService;
 import com.kinnon.util.HostHolder;
 import com.kinnon.util.NewCoderUtil;
-import com.sun.deploy.net.HttpResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Map;
 
 /**
  * @author Kinnon
@@ -31,6 +31,7 @@ import java.io.OutputStream;
 @Slf4j
 @RequestMapping("/user")
 @Controller
+@Transactional
 public class UserController {
 
    @Value("${newcoder.path.upload}")
@@ -97,6 +98,29 @@ public class UserController {
         }finally {
 
         }
+    }
+
+    @PostMapping("/updatePassword")
+    public String updatePassword(String oldPassword, String newPassword,String confirmPassword, Model model){
+        if (StringUtils.isBlank(oldPassword) || StringUtils.isBlank(newPassword)){
+            model.addAttribute("error", "密码不能为空");
+            return "/site/setting";
+        }
+        if(!newPassword.equals(confirmPassword)){
+            model.addAttribute("differror", "两次密码不一致");
+            return "/site/setting";
+        }
+        User user = hostHolder.getUser();
+        Map<String, Object> map = userService.updatePassword(user, oldPassword, newPassword);
+        if(map == null || map.isEmpty()){
+            model.addAttribute("msg", "修改密码成功");
+            model.addAttribute("target", "/user/setting");
+            return "/site/operate-result";
+        }else {
+            model.addAttribute("pwderror", map.get("oldPasswordMsg"));
+        }
+
+        return "/site/setting";
     }
 
 

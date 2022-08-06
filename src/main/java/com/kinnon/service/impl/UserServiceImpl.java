@@ -184,6 +184,24 @@ public  class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return i;
     }
 
+    @Override
+    public Map<String, Object> updatePassword(User user, String oldPassword, String newPassword) {
+        Map<String, Object> map = new HashMap<>();
+        if (user != null) {
+            String md5Password = NewCoderUtil.md5(oldPassword + user.getSalt());
+            if (md5Password.equals(user.getPassword())) {
+                user.setPassword(NewCoderUtil.md5(newPassword + user.getSalt()));
+                userMapper.updateById(user);
+            } else {
+                map.put("oldPasswordMsg", "原密码错误");
+            }
+        } else {
+            map.put("error", "用户不存在");
+        }
+        return map;
+
+    }
+
 
 }
 

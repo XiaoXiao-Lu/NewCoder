@@ -25,6 +25,8 @@ public interface UserService extends IService<User> {
 
     public int updateHeader(int userId, String headerUrl);
 
+    public Map<String, Object> updatePassword(User user, String oldPassword, String newPassword);
+
 
 
 }
