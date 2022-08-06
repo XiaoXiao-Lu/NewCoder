@@ -1,5 +1,6 @@
 package com.kinnon.service;
 
+import com.kinnon.domain.LoginTicket;
 import com.kinnon.domain.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -19,5 +20,9 @@ public interface UserService extends IService<User> {
     public Map<String, Object> login(String username, String password, int expiredSenconds);
 
     public void logout(String ticket);
+
+    public LoginTicket findLoginTicket(String ticket) ;
+
+
 
 }

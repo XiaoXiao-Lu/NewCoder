@@ -134,7 +134,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         user.setType(0);
         user.setActivationCode(NewCoderUtil.generateUUID());
         user.setCreateTime(new Date());
-        user.setHeaderUrl(String.format("http://images.newcoder.com/head/%dt.png", new Random().nextInt(1000)));
+//        user.setHeaderUrl(String.format("http://images.newcoder.com/head/%dt.png", new Random().nextInt(1000)));
+        user.setHeaderUrl("https://api.uomg.com/api/rand.avatar?sort=%E7%94%B7&format=image");
 
         userMapper.insertUser(user);
 
@@ -171,6 +172,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
 
 
+    }
+
+    public LoginTicket findLoginTicket(String ticket) {
+        return loginTicketMapper.selectByTicket(ticket);
     }
 
 
