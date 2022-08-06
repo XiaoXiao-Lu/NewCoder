@@ -1,6 +1,7 @@
 package com.kinnon.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.kinnon.annotation.LoginRequired;
 import com.kinnon.domain.User;
 import com.kinnon.service.UserService;
 import com.kinnon.util.HostHolder;
@@ -49,11 +50,13 @@ public class UserController {
    @Autowired
    private HostHolder hostHolder;
 
+   @LoginRequired
     @GetMapping("/setting")
     public String getSettingPage(){
         return "/site/setting";
     }
 
+    @LoginRequired
     @PostMapping("/upload")
     public String uploadHeader(MultipartFile headImage, Model model){
         if (headImage == null){
