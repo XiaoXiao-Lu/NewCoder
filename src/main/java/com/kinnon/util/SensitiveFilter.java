@@ -67,7 +67,7 @@ public class SensitiveFilter {
      * @param text
      * @return 替换后的文本
      */
-    public String fileter(String text) {
+    public String filter(String text) {
         if (StringUtils.isBlank(text)) {
             return null;
         }

@@ -1,5 +1,6 @@
 package com.kinnon;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.kinnon.domain.LoginTicket;
 import com.kinnon.domain.User;
@@ -49,6 +50,7 @@ class SpringbootProjectDemo1ApplicationTests {
         user.setStatus(0);
         int insert = userMapper.insertUser(user);
         System.out.println(user.getId());
+
     }
 
     @Autowired
@@ -68,7 +70,7 @@ class SpringbootProjectDemo1ApplicationTests {
     @Test
     public void test5(){
         String text = "你好，我是一个小小嫖≌娼的菜鸟,赌博";
-        String result = sensitiveFilter.fileter(text);
+        String result = sensitiveFilter.filter(text);
         System.out.println(result);
     }
 

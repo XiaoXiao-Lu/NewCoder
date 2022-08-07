@@ -1,5 +1,7 @@
 package com.kinnon.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.kinnon.domain.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +39,13 @@ public class TestController {
         System.out.println("id2" + id2);
 
         return "PathVariable";
+    }
+
+    @GetMapping("/test3")
+    @ResponseBody
+    public User test3(){
+        User kinnon = new User();
+        return kinnon;
     }
 
 

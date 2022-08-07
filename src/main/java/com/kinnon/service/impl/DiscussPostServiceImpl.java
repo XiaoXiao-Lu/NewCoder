@@ -6,8 +6,10 @@ import com.kinnon.domain.User;
 import com.kinnon.service.DiscussPostService;
 import com.kinnon.mapper.DiscussPostMapper;
 import com.kinnon.service.UserService;
+import com.kinnon.util.SensitiveFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
 
@@ -23,6 +25,9 @@ public class DiscussPostServiceImpl extends ServiceImpl<DiscussPostMapper, Discu
     @Autowired
     private DiscussPostMapper discussPostMapper;
 
+    @Autowired
+    private SensitiveFilter sensitiveFilter;
+
 
     @Override
     public List<DiscussPost> getDisCussPosts(int userId, int offset, int limit) {
@@ -35,6 +40,20 @@ public class DiscussPostServiceImpl extends ServiceImpl<DiscussPostMapper, Discu
     public int getDiscussPostRows(int userId) {
         int i = discussPostMapper.selectDiscussPostRows(userId);
         return i;
+    }
+
+    @Override
+    public int addDiscussPost(DiscussPost discussPost) {
+        if (discussPost == null){
+            throw new RuntimeException("参数不能为空");
+        }
+        discussPost.setTitle(HtmlUtils.htmlEscape(discussPost.getTitle()));
+        discussPost.setContent(HtmlUtils.htmlEscape(discussPost.getContent()));
+        discussPost.setTitle(sensitiveFilter.filter(discussPost.getTitle()));
+        discussPost.setContent(sensitiveFilter.filter(discussPost.getContent()));
+
+
+        return discussPostMapper.insertDiscussPost(discussPost);
     }
 }
 
