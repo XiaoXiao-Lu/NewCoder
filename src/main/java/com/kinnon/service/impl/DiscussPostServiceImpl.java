@@ -1,6 +1,7 @@
 package com.kinnon.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.kinnon.domain.Comment;
 import com.kinnon.domain.DiscussPost;
 import com.kinnon.domain.User;
 import com.kinnon.service.DiscussPostService;
@@ -54,6 +55,16 @@ public class DiscussPostServiceImpl extends ServiceImpl<DiscussPostMapper, Discu
 
 
         return discussPostMapper.insertDiscussPost(discussPost);
+    }
+
+    public int updateCommentCount(int id, int commentCount) {
+        int rows = discussPostMapper.updateDiscussPostCommetnCount(id, commentCount);
+        return rows;
+    }
+
+    public int selectDiscussPostCount(int userId) {
+        int i = discussPostMapper.selectCommentCount(userId);
+        return i;
     }
 }
 

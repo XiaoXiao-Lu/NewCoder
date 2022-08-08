@@ -3,6 +3,9 @@ package com.kinnon.mapper;
 import com.kinnon.domain.Comment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author Thinkpad
@@ -12,6 +15,13 @@ import org.apache.ibatis.annotations.Mapper;
 */
 @Mapper
 public interface CommentMapper extends BaseMapper<Comment> {
+
+    List<Comment> selectCommentsByEntity(@Param("entityType") int entityType, @Param("entityId")
+            int entityId, @Param("offset") int offset, @Param("limit") int limit);
+
+    int selectCountByEntity(@Param("entityType") int entityType, @Param("entityId") int entityId);
+
+    int insertCommeent(Comment comment);
 
 }
 

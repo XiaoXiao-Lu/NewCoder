@@ -30,6 +30,9 @@
         insert into discuss_post( <include refid="Base_Column_List2"></include>)
         values(#{userId},#{title},#{content},#{type},#{status},#{createTime},#{commentCount},#{score})
     </insert>
+    <update id="updateDiscussPostCommetnCount">
+        update discuss_post set comment_count = #{count} where id = #{discussPostId}
+    </update>
 
 
     <select id="selectDisCussPosts" resultType="DiscussPost">
@@ -49,6 +52,9 @@
             and user_id = #{userId}
         </if>
 
+    </select>
+    <select id="selectCommentCount" resultType="java.lang.Integer">
+        select comment_count from discuss_post where id = #{discussPostId}
     </select>
 
 

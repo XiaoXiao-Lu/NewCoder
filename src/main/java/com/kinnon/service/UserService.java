@@ -1,5 +1,6 @@
 package com.kinnon.service;
 
+import com.kinnon.domain.DiscussPost;
 import com.kinnon.domain.LoginTicket;
 import com.kinnon.domain.User;
 import com.baomidou.mybatisplus.extension.service.IService;

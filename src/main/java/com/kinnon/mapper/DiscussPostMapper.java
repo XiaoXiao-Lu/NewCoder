@@ -29,6 +29,10 @@ public interface DiscussPostMapper extends BaseMapper<DiscussPost> {
 
     int insertDiscussPost(DiscussPost discussPost);
 
+    int updateDiscussPostCommetnCount(@Param("discussPostId") int discussPostId, @Param("count") int count);
+
+    int selectCommentCount(int discussPostId);
+
 }
 
 

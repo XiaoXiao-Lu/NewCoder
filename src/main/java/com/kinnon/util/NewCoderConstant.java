@@ -18,6 +18,11 @@ public interface NewCoderConstant {
 
     int REMEMBER_EXPIRED_SECONDS = 3600 * 24 * 100;
 
+    int ENTITY_TYPE_POST = 1;
+
+    int ENTITY_TYPE_COMMENT = 2;
+
+
 
 
 }

@@ -19,4 +19,8 @@ public interface DiscussPostService extends IService<DiscussPost> {
 
     public int addDiscussPost(DiscussPost discussPost);
 
+    public int updateCommentCount(int id, int commentCount);
+
+    public int selectDiscussPostCount(int userId) ;
+
 }

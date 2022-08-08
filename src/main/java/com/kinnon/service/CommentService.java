@@ -3,6 +3,8 @@ package com.kinnon.service;
 import com.kinnon.domain.Comment;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
 * @author Thinkpad
 * @description 针对表【comment】的数据库操作Service
@@ -10,4 +12,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface CommentService extends IService<Comment> {
 
-}
+    public List<Comment> selectCommentList(int entityType, int entityId, int offset, int limit) ;
+
+    public int selectCountByEntity(int entityType, int entityId) ;
+
+    public int insertComment(Comment comment) ;
+
+
+    }
