@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
 * @author Thinkpad
 * @description 针对表【user】的数据库操作Mapper
@@ -20,6 +22,10 @@ public interface UserMapper extends BaseMapper<User> {
     public User selectByEmail(@Param("email") String email);
 
     public int insertUser(User user);
+
+
+
+
 
 
 

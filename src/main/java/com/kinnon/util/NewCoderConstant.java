@@ -23,6 +23,9 @@ public interface NewCoderConstant {
     int ENTITY_TYPE_COMMENT = 2;
 
 
+    int UNREAD = 0;
+    int READ = 1;
+
 
 
 }

@@ -202,6 +202,10 @@ public  class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     }
 
+    public User findUserByName(String name){
+        return userMapper.selectByUsername(name);
+    }
+
 
 }
 

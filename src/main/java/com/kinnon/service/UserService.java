@@ -28,6 +28,9 @@ public interface UserService extends IService<User> {
 
     public Map<String, Object> updatePassword(User user, String oldPassword, String newPassword);
 
+    public User findUserByName(String name);
 
 
-}
+
+
+    }
