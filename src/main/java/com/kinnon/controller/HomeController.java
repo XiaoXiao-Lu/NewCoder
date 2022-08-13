@@ -7,10 +7,13 @@ import com.kinnon.mapper.DiscussPostMapper;
 import com.kinnon.service.DiscussPostService;
 import com.kinnon.service.UserService;
 
+import com.kinnon.service.impl.LikeService;
+import com.kinnon.util.NewCoderConstant;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
@@ -24,13 +27,17 @@ import java.util.Map;
  */
 
 @Controller
-public class HomeController {
+public class HomeController implements NewCoderConstant {
 
     @Autowired
     private DiscussPostService discussdPostService;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private LikeService likeService;
+
 
     @RequestMapping("/index")
     public String getIndexPage(Model model, Page page){
@@ -44,11 +51,17 @@ public class HomeController {
                 User user = userService.getById(disCussPost.getUserId());
                 map.put("post",disCussPost);
                 map.put("user",user);
+                map.put("likeCount",likeService.getLikeCount(NewCoderConstant.ENTITY_TYPE_POST,disCussPost.getId()));
                 disCussPostsMapList.add(map);
             }
         }
         model.addAttribute("disCussPosts",disCussPostsMapList);
         return "/index";
+    }
+
+    @GetMapping("/error")
+    public String getErrorPage(){
+        return "/error/error";
     }
 
 }

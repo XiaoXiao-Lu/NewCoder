@@ -7,6 +7,7 @@ import com.kinnon.domain.User;
 import com.kinnon.service.CommentService;
 import com.kinnon.service.DiscussPostService;
 import com.kinnon.service.UserService;
+import com.kinnon.service.impl.LikeService;
 import com.kinnon.util.HostHolder;
 import com.kinnon.util.NewCoderConstant;
 import com.kinnon.util.NewCoderUtil;
@@ -33,6 +34,9 @@ public class DiscussPostController implements NewCoderConstant {
 
     @Autowired
     private HostHolder hostHolder;
+
+    @Autowired
+    private LikeService likeService;
 
     @Autowired
     private CommentService commentService;
@@ -62,11 +66,18 @@ public class DiscussPostController implements NewCoderConstant {
     @GetMapping("/detail/{discussPostId}")
     public String getDiscussPostDetail(@PathVariable("discussPostId") int id, Model model, Page page) {
         //帖子
+
         DiscussPost discussPost = discussPostService.getById(id);
         model.addAttribute("discussPost", discussPost);
+
         //作者
         User user = userService.getById(discussPost.getUserId());
+        //用户
+        User currentUser = hostHolder.getUser();
         model.addAttribute("user", user);
+        model.addAttribute("likeCount",likeService.getLikeCount(NewCoderConstant.ENTITY_TYPE_POST,discussPost.getId()));
+        model.addAttribute("likeStatus",currentUser==null?0:likeService.findEntityLikeStatus(currentUser.getId(),
+                NewCoderConstant.ENTITY_TYPE_POST,discussPost.getId()));
 
         page.setLimit(5);
         page.setPath("/discuss/detail/" + id);
@@ -82,6 +93,9 @@ public class DiscussPostController implements NewCoderConstant {
                 User commentUser = userService.getById(comment.getUserId());
                 map.put("comment", comment);
                 map.put("user", commentUser);
+                map.put("likeCount",likeService.getLikeCount(NewCoderConstant.ENTITY_TYPE_COMMENT,comment.getId()));
+                map.put("likeStatus",currentUser==null?0:likeService.findEntityLikeStatus(hostHolder.getUser().getId(),
+                        ENTITY_TYPE_COMMENT,comment.getId()));
 
                 //评论中的评论
                 List<Comment> comments1 = commentService.selectCommentList(ENTITY_TYPE_COMMENT, comment.getId(), 0, Integer.MAX_VALUE);
@@ -96,6 +110,9 @@ public class DiscussPostController implements NewCoderConstant {
                         //回复目标的
                         User user1 = comment1.getTargetId() == 0 ? null : userService.getById(comment1.getTargetId());
                         map1.put("target", user1);
+                        map1.put("likeCount",likeService.getLikeCount(NewCoderConstant.ENTITY_TYPE_COMMENT,comment1.getId()));
+                        map1.put("likeStatus",currentUser==null?0:likeService.findEntityLikeStatus(hostHolder.getUser().getId(),
+                                NewCoderConstant.ENTITY_TYPE_COMMENT,comment1.getId()));
                         commentsMapList1.add(map1);
                     }
                 }

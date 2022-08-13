@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.kinnon.annotation.LoginRequired;
 import com.kinnon.domain.User;
 import com.kinnon.service.UserService;
+import com.kinnon.service.impl.FollowService;
+import com.kinnon.service.impl.LikeService;
 import com.kinnon.util.HostHolder;
+import com.kinnon.util.NewCoderConstant;
 import com.kinnon.util.NewCoderUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +51,13 @@ public class UserController {
    private UserService userService;
 
    @Autowired
+   private LikeService likeService;
+
+   @Autowired
    private HostHolder hostHolder;
+
+   @Autowired
+    private FollowService followService;
 
    @LoginRequired
     @GetMapping("/setting")
@@ -124,6 +133,32 @@ public class UserController {
         }
 
         return "/site/setting";
+    }
+
+    @RequestMapping("/profile/{userId}")
+    public String getProfilePage(Model model,@PathVariable("userId") int userId){
+
+        User targetUser = userService.getById(userId);
+        User currentUser = hostHolder.getUser();
+        if (targetUser == null){
+            throw new RuntimeException("该用户不存在");
+        }
+        int likeCount = likeService.getUserLikeCount(userId);
+        model.addAttribute("targetUser", targetUser);
+        model.addAttribute("likeCount", likeCount);
+        model.addAttribute("myUser", currentUser);
+
+        long followeeCount = followService.getFolloweeCount(userId, NewCoderConstant.ENTITY_TYPE_USER);
+        model.addAttribute("followeeCount", followeeCount);
+        long followerCount = followService.getFollowerCount(NewCoderConstant.ENTITY_TYPE_USER, userId);
+        model.addAttribute("followerCount", followerCount);
+        boolean followStatus =  false;
+        if ( currentUser != null){
+            followStatus = followService.hasFollow(currentUser.getId(), NewCoderConstant.ENTITY_TYPE_USER, userId);
+        }
+        model.addAttribute("hasFollow", followStatus);
+
+        return "/site/profile";
     }
 
 

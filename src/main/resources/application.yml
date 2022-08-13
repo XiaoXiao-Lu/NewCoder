@@ -17,6 +17,11 @@ spring:
     password: flqbiqlkrojibchj
 
 
+  redis:
+    host: localhost
+    database: 11
+
+
 
 
 mybatis-plus:

@@ -18,14 +18,24 @@ public interface NewCoderConstant {
 
     int REMEMBER_EXPIRED_SECONDS = 3600 * 24 * 100;
 
+    /**
+     * 实体用户：帖子
+     */
     int ENTITY_TYPE_POST = 1;
 
+    /**
+     * 实体用户：评论
+     */
     int ENTITY_TYPE_COMMENT = 2;
+
+    /**
+     * 实体用户：用户
+     */
+    int ENTITY_TYPE_USER = 3;
 
 
     int UNREAD = 0;
     int READ = 1;
-
 
 
 }

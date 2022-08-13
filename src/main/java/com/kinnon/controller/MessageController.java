@@ -97,7 +97,7 @@ public class MessageController implements NewCoderConstant {
         }
         List<Integer> ids = ids(letterList);
         if (ids.size() > 0) {
-            messageService.updateMessageStatus(ids,1);
+            messageService.updateMessageStatus(ids,NewCoderConstant.READ);
         }
         model.addAttribute("letters", lettersList);
         model.addAttribute("fromUser", userservice.getById(fromUserId));
@@ -111,6 +111,9 @@ public class MessageController implements NewCoderConstant {
         User toUser = userservice.findUserByName(toName);
         if (toUser == null) {
             return NewCoderUtil.getJSONString(1, "用户不存在");
+        }
+        if(toUser.getUsername().equals(hostHolder.getUser().getUsername())){
+            return NewCoderUtil.getJSONString(1,"不能给自己发消息");
         }
         User user = hostHolder.getUser();
         Message message = new Message();
