@@ -18,5 +18,8 @@ public interface CommentService extends IService<Comment> {
 
     public int insertComment(Comment comment) ;
 
+    public List<Comment> selectCommentListByUserId(int userId);
+
+    public List<Comment> selectCommentListByUserIdAndEntityType(int userId, int entityType);
 
     }

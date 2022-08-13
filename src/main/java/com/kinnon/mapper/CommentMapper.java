@@ -23,6 +23,11 @@ public interface CommentMapper extends BaseMapper<Comment> {
 
     int insertCommeent(Comment comment);
 
+    List<Comment> selectByUserId(@Param("userId") Integer userId);
+
+    List<Comment> selectByUserIdAndEntityType(@Param("userId") Integer userId, @Param("entityType") Integer entityType);
+
+
 }
 
 

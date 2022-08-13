@@ -127,5 +127,42 @@ public class DiscussPostController implements NewCoderConstant {
         return "/site/discuss-detail";
     }
 
+    @RequestMapping("/userDiscuss/{userId}")
+    public String getUserDiscussPostList(@PathVariable("userId") int userId,Model model,Page page){
+        page.setLimit(10);
+        page.setPath("/discuss/userDiscuss/"+userId);
+        page.setRows(discussPostService.getDiscussPostRows(userId));
+        List<DiscussPost> discussPosts = discussPostService.getDisCussPosts(userId, page.getOffset(), page.getLimit());
+        List<Map<String,Object>> discussPostsMap = new ArrayList<>();
+        for (DiscussPost disCussPost : discussPosts) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("discussPost", disCussPost);
+            map.put("likeCount",likeService.getLikeCount(NewCoderConstant.ENTITY_TYPE_POST,disCussPost.getId()));
+            discussPostsMap.add(map);
+        }
+        model.addAttribute("targetUser",userService.getById(userId));
+        model.addAttribute("discussPosts",discussPostsMap);
+        return "/site/my-post";
+
+    }
+
+    @RequestMapping("/userComment/{userId}")
+    public String getUserCommentList(@PathVariable("userId") int userId,Model model,Page page){
+        page.setLimit(10);
+        page.setPath("/discuss/userComment/"+userId);
+        List<Comment> commentPosts = commentService.selectCommentListByUserIdAndEntityType(userId,NewCoderConstant.ENTITY_TYPE_POST);
+        page.setRows(commentPosts.size());
+        List<Map<String,Object>> commentsMap = new ArrayList<>();
+        for (Comment comment : commentPosts) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("comment", comment);
+            map.put("targetDiscussPost",discussPostService.getById(comment.getEntityId()));
+            commentsMap.add(map);
+        }
+        model.addAttribute("targetUser",userService.getById(userId));
+        model.addAttribute("commentsMap",commentsMap);
+        return "/site/my-reply";
+    }
+
 
 }

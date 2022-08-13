@@ -5,6 +5,7 @@ import com.kinnon.domain.LoginTicket;
 import com.kinnon.domain.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -31,6 +32,4 @@ public interface UserService extends IService<User> {
     public User findUserByName(String name);
 
 
-
-
-    }
+}

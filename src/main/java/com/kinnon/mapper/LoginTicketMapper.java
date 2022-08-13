@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Param;
 * @Entity com.kinnon.domain.LoginTicket
 */
 @Mapper
+@Deprecated
 public interface LoginTicketMapper extends BaseMapper<LoginTicket> {
 
     @Insert({"insert into login_ticket(user_id,ticket,status,expired) ",

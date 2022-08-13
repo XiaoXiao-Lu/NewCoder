@@ -67,6 +67,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
         return i;
     }
 
+    @Override
+    public List<Comment> selectCommentListByUserId(int userId) {
+        return commentMapper.selectByUserId(userId);
+    }
+
+    @Override
+    public List<Comment> selectCommentListByUserIdAndEntityType(int userId, int entityType) {
+        return commentMapper.selectByUserIdAndEntityType(userId, entityType);
+    }
 
 
 }

@@ -121,7 +121,7 @@
 				<ul class="list-unstyled">
 					<li class="media pb-3 pt-3 mb-3 border-bottom position-relative" th:each="conversation:${conversations}">
 						<span class="badge badge-danger" th:text="${conversation.unreadCount}" th:if="${conversation.unreadCount != 0}">3</span>
-						<a href="profile.html">
+						<a th:href="@{|/user/profile/${conversation.fromUser.id}|}">
 							<img th:src="${conversation.fromUser.headerUrl}" class="mr-4 rounded-circle user-header" alt="用户头像" >
 						</a>
 						<div class="media-body">

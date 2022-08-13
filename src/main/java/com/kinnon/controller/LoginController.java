@@ -6,9 +6,12 @@ import com.kinnon.domain.User;
 import com.kinnon.mapper.UserMapper;
 import com.kinnon.service.UserService;
 import com.kinnon.util.NewCoderConstant;
+import com.kinnon.util.NewCoderUtil;
+import com.kinnon.util.RedisKeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -25,6 +28,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Kinnon
@@ -42,6 +46,9 @@ public class LoginController implements NewCoderConstant {
 
     @Value(("${server.servlet.context-path}"))
     private String contextPath;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @GetMapping("/register")
     public String getRegisterPage(){
@@ -90,10 +97,20 @@ public class LoginController implements NewCoderConstant {
 
 
     @GetMapping("/kaptcha")
-    public void getKaptcha(HttpSession session, HttpServletResponse response){
+    public void getKaptcha(HttpServletResponse response){
         String text = kaptchaProducer.createText();
         BufferedImage image = kaptchaProducer.createImage(text);
-        session.setAttribute("kaptcha",text);
+
+        //验证码归属
+        String owner = NewCoderUtil.generateUUID();
+        Cookie cookie = new Cookie("kaptchaOwner", owner);
+        cookie.setPath(contextPath);
+        cookie.setMaxAge(60);
+        response.addCookie(cookie);
+
+        String key = RedisKeyUtil.getKaptchaKey(owner);
+        redisTemplate.opsForValue().set(key, text,60, TimeUnit.SECONDS);
+
         response.setContentType("image/png");
         try {
             OutputStream os = response.getOutputStream();
@@ -106,9 +123,14 @@ public class LoginController implements NewCoderConstant {
 
     @PostMapping("/login")
     public String login(String username, String password, boolean rememberme,
-                        HttpServletResponse response,HttpSession session, String code,Model model){
+                        HttpServletResponse response, String code,Model model ,@CookieValue("kaptchaOwner") String kafkaToken){
 
-        String kaptcha =(String) session.getAttribute("kaptcha");
+//        String kaptcha =(String) session.getAttribute("kaptcha");
+        String kaptcha = null;
+        if (StringUtils.isNotBlank(kafkaToken)){
+            String key = RedisKeyUtil.getKaptchaKey(kafkaToken);
+            kaptcha = (String) redisTemplate.opsForValue().get(key);
+        }
         if (StringUtils.isBlank(code) || StringUtils.isBlank(kaptcha) || !code.equalsIgnoreCase(kaptcha)){
             model.addAttribute("codeMsg","验证码不正确");
             return "/site/login";
@@ -134,6 +156,11 @@ public class LoginController implements NewCoderConstant {
     public String logout(HttpServletResponse response, HttpSession session, @CookieValue String ticket){
         userService.logout(ticket);
         return "redirect:/login";
+    }
+
+    @GetMapping("/forget")
+    public String getForgetPage(){
+        return "/site/forget";
     }
 
 }
