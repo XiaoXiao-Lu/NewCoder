@@ -61,6 +61,23 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message>
 
     }
 
+    public Message getLatestMessage(int userId,String topic) {
+        return  messageMapper.selectLatestNotice(userId,topic);
+    }
+
+    public int getNoticeCount(int userId,String topic) {
+        return messageMapper.selectNoticeCount(userId,topic);
+    }
+
+    public int getNoticeUnreadCount(int userId,String topic) {
+        return messageMapper.selectNoticeUnreadCount(userId,topic);
+    }
+
+    public List<Message> getNotices(int userId,String topic,int offset,int limit) {
+        return messageMapper.selectNotices(userId,topic,offset,limit);
+    }
+
+
 
 
 }
