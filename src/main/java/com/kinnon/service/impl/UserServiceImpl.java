@@ -165,7 +165,7 @@ public  class UserServiceImpl extends ServiceImpl<UserMapper, User>
 //        templateEngine.set
         mailClient.sendMail(user.getEmail(), "激活牛客社区账号", content);
 
-        return null;
+        return map;
     }
 
     /**

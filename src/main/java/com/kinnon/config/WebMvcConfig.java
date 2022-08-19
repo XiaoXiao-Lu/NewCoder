@@ -3,6 +3,7 @@ package com.kinnon.config;
 import com.kinnon.controller.intercepter.AlphaInterceter;
 import com.kinnon.controller.intercepter.LoginRequirdInterceter;
 import com.kinnon.controller.intercepter.LoginTicketInterceter;
+import com.kinnon.controller.intercepter.MessageInterceter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +27,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     private LoginRequirdInterceter loginRequirdInterceter;
 
+    @Autowired
+    private MessageInterceter messageInterceter;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(alphaInterceter)
@@ -37,6 +41,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/*/*.css","/*/*.js","/*/*.png","/*/*.jpeg");
 
         registry.addInterceptor(loginRequirdInterceter)
+                .excludePathPatterns("/*/*.css","/*/*.js","/*/*.png","/*/*.jpeg");
+
+        registry.addInterceptor(messageInterceter)
                 .excludePathPatterns("/*/*.css","/*/*.js","/*/*.png","/*/*.jpeg");
 
 

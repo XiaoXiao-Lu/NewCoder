@@ -2,9 +2,12 @@ package com.kinnon.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.kinnon.annotation.LoginRequired;
+import com.kinnon.domain.Event;
 import com.kinnon.domain.User;
+import com.kinnon.event.EventProducer;
 import com.kinnon.service.impl.LikeService;
 import com.kinnon.util.HostHolder;
+import com.kinnon.util.NewCoderConstant;
 import com.kinnon.util.NewCoderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +23,7 @@ import java.util.Map;
  * @create 2022-08-11 23:37
  */
 @Controller
-public class LikeController {
+public class LikeController implements NewCoderConstant {
 
     @Autowired
     private LikeService likeService;
@@ -28,17 +31,40 @@ public class LikeController {
     @Autowired
     private HostHolder hostholer;
 
+    @Autowired
+    private EventProducer eventProducer;
+
 
 
     @PostMapping("/like")
     @ResponseBody
-    public String like(int entityType, int entityId,int entityUserId) {
+    public String like(int entityType, int entityId,int entityUserId,int postId) {
         User user = hostholer.getUser();
         likeService.like(user.getId(), entityType, entityId,entityUserId);
         long likeCount = likeService.getLikeCount(entityType, entityId);
         Map<String, Object> map = new HashMap<>();
         map.put("likeCount", likeCount);
-        map.put("likeStatus", likeService.findEntityLikeStatus(user.getId(), entityType, entityId));
+        int likeStatus = likeService.findEntityLikeStatus(user.getId(), entityType, entityId);
+        map.put("likeStatus", likeStatus);
+
+        if (likeStatus == 1){
+
+            Event event = new Event()
+                    .setTopic(TOPIC_LIKE)
+                    .setUserId(user.getId())
+                    .setEntityType(entityType)
+                    .setEntityId(entityId)
+                    .setEntityUserId(entityUserId)
+                    .setData("postId",postId);
+            eventProducer.fireEvent(event);
+
+        }
+
+
+
+
+
+
         return NewCoderUtil.getJSONString(0,null,map);
     }
 

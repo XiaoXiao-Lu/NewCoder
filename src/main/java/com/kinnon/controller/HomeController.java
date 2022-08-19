@@ -5,9 +5,11 @@ import com.kinnon.domain.Page;
 import com.kinnon.domain.User;
 import com.kinnon.mapper.DiscussPostMapper;
 import com.kinnon.service.DiscussPostService;
+import com.kinnon.service.MessageService;
 import com.kinnon.service.UserService;
 
 import com.kinnon.service.impl.LikeService;
+import com.kinnon.util.HostHolder;
 import com.kinnon.util.NewCoderConstant;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,12 @@ public class HomeController implements NewCoderConstant {
     @Autowired
     private LikeService likeService;
 
+    @Autowired
+    private MessageService messageService;
+
+    @Autowired
+    private HostHolder hostHolder;
+
 
     @RequestMapping("/index")
     public String getIndexPage(Model model, Page page){
@@ -55,6 +63,7 @@ public class HomeController implements NewCoderConstant {
                 disCussPostsMapList.add(map);
             }
         }
+
         model.addAttribute("disCussPosts",disCussPostsMapList);
         return "/index";
     }

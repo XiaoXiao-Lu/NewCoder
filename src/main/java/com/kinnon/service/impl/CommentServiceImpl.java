@@ -45,6 +45,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
         return count;
     }
 
+    // 发表评论
     @Transactional(isolation = Isolation.READ_COMMITTED,propagation = Propagation.REQUIRED)
     public int insertComment(Comment comment) {
         if (comment == null) {
@@ -59,7 +60,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
         if (comment.getEntityType() == ENTITY_TYPE_POST) {
             int commentCount = commentMapper.selectCountByEntity(comment.getEntityType(), comment.getEntityId());
             discussPostService.updateCommentCount(comment.getEntityId(), commentCount);
-
         }
 
 

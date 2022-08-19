@@ -28,7 +28,19 @@ public interface MessageService extends IService<Message> {
 
     public int updateMessageStatus(List<Integer> ids, int status) ;
 
+    public Message getLatestMessage(int userId,String topic) ;
+
+
+    public int getNoticeCount(int userId,String topic) ;
+
+
+    public  int getNoticeUnreadCount(int userId,String topic) ;
+
+    public List<Message> getNotices(int userId,String topic,int offset,int limit) ;
 
 
 
-}
+
+
+
+    }

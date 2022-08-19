@@ -1,12 +1,11 @@
 package com.kinnon.controller;
 
-import com.kinnon.domain.Comment;
-import com.kinnon.domain.DiscussPost;
-import com.kinnon.domain.Page;
-import com.kinnon.domain.User;
+import com.kinnon.domain.*;
+import com.kinnon.event.EventProducer;
 import com.kinnon.service.CommentService;
 import com.kinnon.service.DiscussPostService;
 import com.kinnon.service.UserService;
+import com.kinnon.service.impl.ElasticsearchService;
 import com.kinnon.service.impl.LikeService;
 import com.kinnon.util.HostHolder;
 import com.kinnon.util.NewCoderConstant;
@@ -41,6 +40,12 @@ public class DiscussPostController implements NewCoderConstant {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private EventProducer eventProducer;
+
+//    @Autowired
+//    private ElasticsearchService elasticsearchService;
+
     @PostMapping("add")
     @ResponseBody
     public String addDiscussPost(String title, String content) {
@@ -57,7 +62,17 @@ public class DiscussPostController implements NewCoderConstant {
         discussPost.setType(0);
         discussPost.setCommentCount(0);
         discussPost.setScore(0.00);
-        int result = discussPostService.addDiscussPost(discussPost);
+        discussPostService.addDiscussPost(discussPost);
+
+        //触发发帖事件
+        Event event = new Event()
+                .setTopic(TOPIC_PUBLISH)
+                .setUserId(userId)
+                .setEntityType(ENTITY_TYPE_POST)
+                .setEntityId(discussPost.getId())
+                .setData("postId", discussPost.getId())
+                .setData("content", discussPost.getContent());
+        eventProducer.fireEvent(event);
 
         return NewCoderUtil.getJSONString(0, "发布成功");
 

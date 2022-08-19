@@ -1,7 +1,9 @@
 package com.kinnon.controller;
 
+import com.kinnon.domain.Event;
 import com.kinnon.domain.Page;
 import com.kinnon.domain.User;
+import com.kinnon.event.EventProducer;
 import com.kinnon.service.UserService;
 import com.kinnon.service.impl.FollowService;
 import com.kinnon.util.HostHolder;
@@ -35,11 +37,23 @@ public class FollowController implements NewCoderConstant {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EventProducer eventProducer;
+
     @PostMapping("/follow")
     @ResponseBody
     public String follow(int entityType, int entityId) {
         User user = hostHolder.getUser();
         followService.follow(user.getId() ,entityType, entityId);
+
+
+        Event event = new Event()
+                .setTopic(TOPIC_FOLLOW)
+                .setUserId(user.getId())
+                .setEntityType(entityType)
+                .setEntityId(entityId)
+                .setEntityUserId(entityId);
+        eventProducer.fireEvent(event);
 
         return NewCoderUtil.getJSONString(0, "已关注");
     }

@@ -57,8 +57,15 @@ public interface MessageMapper extends BaseMapper<Message> {
 
     public int updateMessageStatus(@Param("ids") List<Integer> ids, @Param("status") int status);
 
+    //查询某个主题下的最新消息
+    Message selectLatestNotice(@Param("userId") int userId, @Param("topic") String topic);
+    //查询某个主题下的所有消息数量
+    int selectNoticeCount(@Param("userId") int userId, @Param("topic") String topic);
+    //查询某个主题未读消息数量
+    int selectNoticeUnreadCount(@Param("userId") int userId, @Param("topic") String topic);
 
-
+    //查询某个主题下的通知列表
+    List<Message> selectNotices(@Param("userId") int userId, @Param("topic") String topic, @Param("offset") int offset, @Param("limit") int limit);
 
 }
 

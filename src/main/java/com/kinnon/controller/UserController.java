@@ -59,12 +59,14 @@ public class UserController {
    @Autowired
     private FollowService followService;
 
+   //设置
    @LoginRequired
     @GetMapping("/setting")
     public String getSettingPage(){
         return "/site/setting";
     }
 
+    //修改头像
     @LoginRequired
     @PostMapping("/upload")
     public String uploadHeader(MultipartFile headImage, Model model){
@@ -93,6 +95,7 @@ public class UserController {
         return "redirect:/user/setting";
     }
 
+    //头像
     @GetMapping("/header/{fileName}")
     public void uploadHeader(@PathVariable("fileName") String fileName, HttpServletResponse response){
        fileName = uploadPath + "/" + fileName;
@@ -112,6 +115,7 @@ public class UserController {
         }
     }
 
+    //修改密码
     @PostMapping("/updatePassword")
     public String updatePassword(String oldPassword, String newPassword,String confirmPassword, Model model){
         if (StringUtils.isBlank(oldPassword) || StringUtils.isBlank(newPassword)){
@@ -135,6 +139,7 @@ public class UserController {
         return "/site/setting";
     }
 
+    //主页
     @RequestMapping("/profile/{userId}")
     public String getProfilePage(Model model,@PathVariable("userId") int userId){
 

@@ -37,5 +37,31 @@ public interface NewCoderConstant {
     int UNREAD = 0;
     int READ = 1;
 
+    /**
+     * 主题：评论
+     */
+    String TOPIC_COMMENT = "comment";
+
+    /**
+     * 主题：关注
+     */
+    String TOPIC_FOLLOW = "follow";
+
+    /**
+     * 主题：发帖
+     */
+    String TOPIC_PUBLISH = "publish";
+
+    /**
+     * 主题：点赞
+     */
+    String TOPIC_LIKE = "like";
+
+    /**
+     * 系统ID
+     */
+    int SYSTEM_USER_ID = 1;
+
+
 
 }
