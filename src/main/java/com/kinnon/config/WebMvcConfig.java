@@ -40,8 +40,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(loginTicketInterceter)
                 .excludePathPatterns("/*/*.css","/*/*.js","/*/*.png","/*/*.jpeg");
 
-        registry.addInterceptor(loginRequirdInterceter)
-                .excludePathPatterns("/*/*.css","/*/*.js","/*/*.png","/*/*.jpeg");
+//        registry.addInterceptor(loginRequirdInterceter)
+//                .excludePathPatterns("/*/*.css","/*/*.js","/*/*.png","/*/*.jpeg");
 
         registry.addInterceptor(messageInterceter)
                 .excludePathPatterns("/*/*.css","/*/*.js","/*/*.png","/*/*.jpeg");
