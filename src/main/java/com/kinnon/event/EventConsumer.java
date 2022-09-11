@@ -6,7 +6,7 @@ import com.kinnon.domain.Event;
 import com.kinnon.domain.Message;
 import com.kinnon.service.DiscussPostService;
 import com.kinnon.service.MessageService;
-import com.kinnon.service.impl.ElasticsearchService;
+import com.kinnon.service.ElasticsearchService;
 import com.kinnon.util.NewCoderConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -83,6 +83,25 @@ public class EventConsumer implements NewCoderConstant {
         elasticsearchService.save(post);
 
     }
+
+    @KafkaListener(topics = {TOPIC_DELETE})
+    public void handleDeleteMessage(ConsumerRecord record){
+        if (record ==null || record.value() == null){
+            log.error("消费端消息为空");
+            return;
+        }
+        Event event = JSONObject.parseObject(record.value().toString(), Event.class);
+        if (event ==null) {
+            log.error("消息格式错误!");
+        }
+
+
+        elasticsearchService.deleteDiscussPOst(event.getEntityId());
+
+    }
+
+
+
 
 
 

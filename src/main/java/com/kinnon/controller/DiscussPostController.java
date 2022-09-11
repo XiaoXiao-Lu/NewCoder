@@ -5,8 +5,7 @@ import com.kinnon.event.EventProducer;
 import com.kinnon.service.CommentService;
 import com.kinnon.service.DiscussPostService;
 import com.kinnon.service.UserService;
-import com.kinnon.service.impl.ElasticsearchService;
-import com.kinnon.service.impl.LikeService;
+import com.kinnon.service.LikeService;
 import com.kinnon.util.HostHolder;
 import com.kinnon.util.NewCoderConstant;
 import com.kinnon.util.NewCoderUtil;
@@ -178,6 +177,67 @@ public class DiscussPostController implements NewCoderConstant {
         model.addAttribute("commentsMap",commentsMap);
         return "/site/my-reply";
     }
+
+    //置顶
+    @PostMapping("/top")
+    @ResponseBody
+    public String setTop(int id){
+        DiscussPost discussPostById = discussPostService.getById(id);
+        // 获取置顶状态，1为置顶，0为正常状态,1^1=0 0^1=1
+        int type = discussPostById.getType()^1;
+
+        discussPostService.updateType(id,type);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("type", type);
+        Event event = new Event()
+                .setTopic(TOPIC_PUBLISH)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(ENTITY_TYPE_POST)
+                .setEntityId(id);
+
+        eventProducer.fireEvent(event);
+        return NewCoderUtil.getJSONString(0, null, map);
+    }
+
+    @PostMapping("/wonderful")
+    @ResponseBody
+    public String setWonderful(int id){
+        DiscussPost discussPostById = discussPostService.getById(id);
+        int status = discussPostById.getStatus()^1;
+        // 1为加精，0为正常， 1^1=0, 0^1=1
+
+        discussPostService.updateStatus(id,status);
+        // 返回的结果
+        Map<String, Object> map = new HashMap<>();
+        map.put("status", status);
+        Event event = new Event()
+                .setTopic(TOPIC_PUBLISH)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(ENTITY_TYPE_POST)
+                .setEntityId(id);
+
+        eventProducer.fireEvent(event);
+        return NewCoderUtil.getJSONString(0, null, map);
+    }
+
+    //删除帖子
+    @PostMapping("/delete")
+    @ResponseBody
+    public String setDelete(int id){
+        discussPostService.removeById(id);
+
+        Event event = new Event()
+                .setTopic(TOPIC_DELETE)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(ENTITY_TYPE_POST)
+                .setEntityId(id);
+
+        eventProducer.fireEvent(event);
+        return NewCoderUtil.getJSONString(0);
+    }
+
+
 
 
 }

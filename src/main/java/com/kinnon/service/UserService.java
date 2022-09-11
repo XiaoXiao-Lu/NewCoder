@@ -4,8 +4,10 @@ import com.kinnon.domain.DiscussPost;
 import com.kinnon.domain.LoginTicket;
 import com.kinnon.domain.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -23,7 +25,7 @@ public interface UserService extends IService<User> {
 
     public void logout(String ticket);
 
-    public LoginTicket findLoginTicket(String ticket) ;
+    public LoginTicket findLoginTicket(String ticket);
 
     public int updateHeader(int userId, String headerUrl);
 
@@ -31,5 +33,10 @@ public interface UserService extends IService<User> {
 
     public User findUserByName(String name);
 
+    public Collection<? extends GrantedAuthority> getAuthorities(int userId);
 
 }
+
+
+
+

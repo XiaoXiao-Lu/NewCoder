@@ -33,6 +33,10 @@ public interface DiscussPostMapper extends BaseMapper<DiscussPost> {
 
     int selectCommentCount(int discussPostId);
 
+    int updateTypeById(@Param("type") Integer type, @Param("id") Integer id);
+
+    int updateStatusById(@Param("status") Integer status, @Param("id") Integer id);
+
 }
 
 

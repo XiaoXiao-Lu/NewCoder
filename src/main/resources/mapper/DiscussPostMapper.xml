@@ -58,6 +58,16 @@
     <select id="selectCommentCount" resultType="java.lang.Integer">
         select comment_count from discuss_post where id = #{discussPostId}
     </select>
+    <update id="updateTypeById">
+        update discuss_post
+        set type = #{type,jdbcType=NUMERIC}
+        where id = #{id,jdbcType=NUMERIC}
+    </update>
+    <update id="updateStatusById">
+        update discuss_post
+        set status = #{status,jdbcType=NUMERIC}
+        where id = #{id,jdbcType=NUMERIC}
+    </update>
 
 
 </mapper>

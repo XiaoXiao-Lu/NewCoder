@@ -23,4 +23,8 @@ public interface DiscussPostService extends IService<DiscussPost> {
 
     public int selectDiscussPostCount(int userId) ;
 
+    public int updateStatus(int id,int status);
+
+    public int updateType(int id,int type);
+
 }

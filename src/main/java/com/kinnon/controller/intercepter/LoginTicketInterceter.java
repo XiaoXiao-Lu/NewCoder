@@ -8,6 +8,10 @@ import com.kinnon.util.CookieUtil;
 import com.kinnon.util.HostHolder;
 import org.apache.catalina.Host;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,10 +39,17 @@ public class LoginTicketInterceter implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String ticket = CookieUtil.getCookieValue(request, "ticket");
         if (ticket != null) {
+            //根据凭证查询用户
             LoginTicket loginTicket = userService.findLoginTicket(ticket);
+
             if (loginTicket != null && loginTicket.getStatus() == 0 && loginTicket.getExpired().after(new Date())) {
                 User user = userService.getById(loginTicket.getUserId());
                 hostHolder.setUser(user);
+
+                //构建用户认证结果，存入security以便于授权
+                Authentication authtication = new UsernamePasswordAuthenticationToken(
+                        user,user.getPassword(),userService.getAuthorities(user.getId()) );
+                SecurityContextHolder.setContext(new SecurityContextImpl(authtication));
             }
         }
 
@@ -56,5 +67,6 @@ public class LoginTicketInterceter implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         hostHolder.clear();
+        SecurityContextHolder.clearContext();
     }
 }

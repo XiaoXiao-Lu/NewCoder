@@ -3,15 +3,13 @@ package com.kinnon.controller;
 import com.kinnon.domain.DiscussPost;
 import com.kinnon.domain.Page;
 import com.kinnon.domain.User;
-import com.kinnon.mapper.DiscussPostMapper;
 import com.kinnon.service.DiscussPostService;
 import com.kinnon.service.MessageService;
 import com.kinnon.service.UserService;
 
-import com.kinnon.service.impl.LikeService;
+import com.kinnon.service.LikeService;
 import com.kinnon.util.HostHolder;
 import com.kinnon.util.NewCoderConstant;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,6 +69,12 @@ public class HomeController implements NewCoderConstant {
     @GetMapping("/error")
     public String getErrorPage(){
         return "/error/error";
+    }
+
+    // 拒绝访问时的提示页面
+    @GetMapping ( "/denied")
+    public String getDeniedPage() {
+        return "/error/404";
     }
 
 }

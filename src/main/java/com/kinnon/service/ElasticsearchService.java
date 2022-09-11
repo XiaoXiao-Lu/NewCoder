@@ -1,4 +1,4 @@
-package com.kinnon.service.impl;
+package com.kinnon.service;
 
 import com.kinnon.domain.DiscussPost;
 import com.kinnon.mapper.elasticsearch.DiscussPostRepository;

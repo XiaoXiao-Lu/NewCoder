@@ -5,7 +5,7 @@ import com.kinnon.domain.Page;
 import com.kinnon.domain.User;
 import com.kinnon.event.EventProducer;
 import com.kinnon.service.UserService;
-import com.kinnon.service.impl.FollowService;
+import com.kinnon.service.FollowService;
 import com.kinnon.util.HostHolder;
 import com.kinnon.util.NewCoderConstant;
 import com.kinnon.util.NewCoderUtil;

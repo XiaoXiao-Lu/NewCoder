@@ -20,6 +20,7 @@ spring:
   redis:
     host: localhost
     database: 11
+
   kafka:
     bootstrap-servers: localhost:9092
     consumer:

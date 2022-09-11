@@ -1,4 +1,4 @@
-package com.kinnon.service.impl;
+package com.kinnon.service;
 
 import com.kinnon.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;

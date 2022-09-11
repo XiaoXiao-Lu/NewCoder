@@ -66,6 +66,14 @@ public class DiscussPostServiceImpl extends ServiceImpl<DiscussPostMapper, Discu
         int i = discussPostMapper.selectCommentCount(userId);
         return i;
     }
+
+    public int updateStatus(int id,int status){
+        return discussPostMapper.updateStatusById(status,id);
+    }
+
+    public int updateType(int id,int type){
+        return discussPostMapper.updateTypeById(type,id);
+    }
 }
 
 

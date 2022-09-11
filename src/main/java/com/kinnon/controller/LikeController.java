@@ -1,18 +1,15 @@
 package com.kinnon.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.kinnon.annotation.LoginRequired;
 import com.kinnon.domain.Event;
 import com.kinnon.domain.User;
 import com.kinnon.event.EventProducer;
-import com.kinnon.service.impl.LikeService;
+import com.kinnon.service.LikeService;
 import com.kinnon.util.HostHolder;
 import com.kinnon.util.NewCoderConstant;
 import com.kinnon.util.NewCoderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
