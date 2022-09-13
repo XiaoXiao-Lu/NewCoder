@@ -2,10 +2,12 @@ package com.kinnon;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.annotation.PostConstruct;
 
 @SpringBootApplication
+
 public class SpringbootProjectDemo1Application {
 
     //解决netty冲突问题

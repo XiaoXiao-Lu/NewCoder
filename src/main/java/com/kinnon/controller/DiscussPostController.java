@@ -9,7 +9,9 @@ import com.kinnon.service.LikeService;
 import com.kinnon.util.HostHolder;
 import com.kinnon.util.NewCoderConstant;
 import com.kinnon.util.NewCoderUtil;
+import com.kinnon.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +44,9 @@ public class DiscussPostController implements NewCoderConstant {
     @Autowired
     private EventProducer eventProducer;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
 //    @Autowired
 //    private ElasticsearchService elasticsearchService;
 
@@ -72,6 +77,9 @@ public class DiscussPostController implements NewCoderConstant {
                 .setData("postId", discussPost.getId())
                 .setData("content", discussPost.getContent());
         eventProducer.fireEvent(event);
+
+        String redisKey = RedisKeyUtil.getPostScoreKey();
+        redisTemplate.opsForSet().add(redisKey,discussPost.getId());
 
         return NewCoderUtil.getJSONString(0, "发布成功");
 
@@ -142,11 +150,12 @@ public class DiscussPostController implements NewCoderConstant {
     }
 
     @RequestMapping("/userDiscuss/{userId}")
-    public String getUserDiscussPostList(@PathVariable("userId") int userId,Model model,Page page){
+    public String getUserDiscussPostList(@PathVariable("userId") int userId,Model model,Page page
+                                         ){
         page.setLimit(10);
         page.setPath("/discuss/userDiscuss/"+userId);
         page.setRows(discussPostService.getDiscussPostRows(userId));
-        List<DiscussPost> discussPosts = discussPostService.getDisCussPosts(userId, page.getOffset(), page.getLimit());
+        List<DiscussPost> discussPosts = discussPostService.getDisCussPosts(userId, page.getOffset(), page.getLimit(),0);
         List<Map<String,Object>> discussPostsMap = new ArrayList<>();
         for (DiscussPost disCussPost : discussPosts) {
             HashMap<String, Object> map = new HashMap<>();

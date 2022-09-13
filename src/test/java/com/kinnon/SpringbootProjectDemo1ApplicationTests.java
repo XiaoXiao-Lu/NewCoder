@@ -24,14 +24,14 @@ class SpringbootProjectDemo1ApplicationTests {
     @Test
     void contextLoads() {
 //        System.out.println(discussPostService.getDiscussPostRows(0));
-        System.out.println(discussPostService.getDisCussPosts(0, 0, 10));
+//        System.out.println(discussPostService.getDisCussPosts(0, 0, 10));
     }
     @Autowired
     private DiscussPostMapper discussPostMapper;
 
     @Test
     void test1 (){
-        System.out.println(discussPostMapper.selectDisCussPosts(0, 0, 10));
+//        System.out.println(discussPostMapper.selectDisCussPosts(0, 0, 10));
     }
 
     @Test

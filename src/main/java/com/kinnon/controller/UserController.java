@@ -9,17 +9,17 @@ import com.kinnon.service.LikeService;
 import com.kinnon.util.HostHolder;
 import com.kinnon.util.NewCoderConstant;
 import com.kinnon.util.NewCoderUtil;
+import com.qiniu.util.Auth;
+import com.qiniu.util.StringMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -59,14 +59,53 @@ public class UserController {
    @Autowired
     private FollowService followService;
 
+    @Value("${qiniu.key.access}")
+    private String accessKey;
+
+    @Value("${qiniu.key.secret}")
+    private String secretKey;
+
+    @Value("${qiniu.bucket.header.name}")
+    private String headerBucketName;
+
+    @Value("${qiniu.bucket.header.url}")
+    private String headerBucketUrl;
+
    //设置
    @LoginRequired
     @GetMapping("/setting")
-    public String getSettingPage(){
+    public String getSettingPage(Model model){
+       // 上传文件名称
+       String fileName = NewCoderUtil.generateUUID();
+       // 设置响应信息
+       StringMap policy = new StringMap();
+       policy.put("returnBody", NewCoderUtil.getJSONString(0));
+       // 生成上传凭证
+       Auth auth = Auth.create(accessKey, secretKey);
+       String uploadToken = auth.uploadToken(headerBucketName, fileName, 3600, policy);
+
+       model.addAttribute("uploadToken", uploadToken);
+       model.addAttribute("fileName", fileName);
         return "/site/setting";
     }
 
+    // 更新头像路径
+    @RequestMapping(path = "/header/url", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateHeaderUrl(String fileName) {
+        if (StringUtils.isBlank(fileName)) {
+            return NewCoderUtil.getJSONString(1, "文件名不能为空!");
+        }
+
+        String url = headerBucketUrl + "/" + fileName;
+        userService.updateHeader(hostHolder.getUser().getId(), url);
+
+        return NewCoderUtil.getJSONString(0);
+    }
+
+
     //修改头像
+    //废弃
     @LoginRequired
     @PostMapping("/upload")
     public String uploadHeader(MultipartFile headImage, Model model){
@@ -96,6 +135,7 @@ public class UserController {
     }
 
     //头像
+    //废弃
     @GetMapping("/header/{fileName}")
     public void uploadHeader(@PathVariable("fileName") String fileName, HttpServletResponse response){
        fileName = uploadPath + "/" + fileName;

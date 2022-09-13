@@ -18,8 +18,8 @@ import java.util.Date;
  * @author Kinnon
  * @create 2022-08-09 22:13
  */
-@Component
-@Aspect
+//@Component
+//@Aspect
 @Slf4j
 public class ServiceLogAspect {
 

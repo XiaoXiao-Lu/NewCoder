@@ -16,6 +16,23 @@ spring:
     username: 741551902@qq.com
     password: flqbiqlkrojibchj
 
+  quartz:
+    job-store-type: jdbc
+    properties:
+      org:
+        quartz:
+          jobStore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            isClustered: true
+          scheduler:
+            instanceId: AUTO
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 5
+    scheduler-name: communityScheduler
+
+
 
   redis:
     host: localhost
@@ -35,6 +52,17 @@ spring:
     cluster:
       name: newcoder
 
+  #ExcutorTask
+  task:
+    execution:
+      pool:
+        max-size: 15
+        queue-capacity: 100
+        core-size: 5
+    scheduling:
+      pool:
+        size: 5
+  #TaskScheduleExcutor
 
 mybatis-plus:
   type-aliases-package: com.kinnon.domain
@@ -54,6 +82,26 @@ newcoder:
     domain: "http://localhost:8080"
     upload: d://work/data/upload
 
-#图片上传路径
+qiniu:
+  key:
+    access: wFhvmXLCXA4XTKzDbbVzOCRNtghC8fsfg_UgKzJB
+    secret: KMPpxx0Xe4nmz3XctKGqAMy-VnE5wM0j2zaJ69uL
+  bucket:
+    header:
+      name: newcoder2022
+      url : http://ri5221mgj.hn-bkt.clouddn.com
+
+#caffeine
+caffeine:
+  posts:
+    max-size: 15
+    expire-seconds: 180
+
+
+
+
+
+
+
 
 

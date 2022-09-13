@@ -23,7 +23,8 @@ public interface DiscussPostMapper extends BaseMapper<DiscussPost> {
      * @param limit  分页返回的数据数
      * @return
      */
-    List<DiscussPost> selectDisCussPosts(@Param("userId") int userId, @Param("offset") int offset, @Param("limit") int limit);
+    List<DiscussPost> selectDisCussPosts(@Param("userId") int userId, @Param("offset") int offset,
+                                         @Param("limit") int limit, @Param("orderMode") int orderMode);
 
     int selectDiscussPostRows(@Param("userId") int userId);
 

@@ -7,7 +7,9 @@ import com.kinnon.service.LikeService;
 import com.kinnon.util.HostHolder;
 import com.kinnon.util.NewCoderConstant;
 import com.kinnon.util.NewCoderUtil;
+import com.kinnon.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,6 +32,9 @@ public class LikeController implements NewCoderConstant {
 
     @Autowired
     private EventProducer eventProducer;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
 
 
@@ -56,6 +61,9 @@ public class LikeController implements NewCoderConstant {
             eventProducer.fireEvent(event);
 
         }
+
+        String redisKey = RedisKeyUtil.getPostScoreKey();
+        redisTemplate.opsForSet().add(redisKey,postId);
 
 
 

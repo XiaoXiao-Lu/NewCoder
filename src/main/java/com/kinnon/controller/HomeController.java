@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,10 +47,10 @@ public class HomeController implements NewCoderConstant {
 
 
     @RequestMapping("/index")
-    public String getIndexPage(Model model, Page page){
+    public String getIndexPage(Model model, Page page,@RequestParam(name="orderMode",defaultValue="0") int orderMode){
         page.setRows(discussdPostService.getDiscussPostRows(0));
-        page.setPath("/index");
-        List<DiscussPost> disCussPosts = discussdPostService.getDisCussPosts(0, page.getOffset(), page.getLimit());
+        page.setPath("/index?orderMode=" + orderMode);
+        List<DiscussPost> disCussPosts = discussdPostService.getDisCussPosts(0, page.getOffset(), page.getLimit(),orderMode);
         List<Map<String,Object>> disCussPostsMapList = new ArrayList<>();
         if (disCussPosts != null ){
             for (DiscussPost disCussPost : disCussPosts) {
@@ -63,6 +64,7 @@ public class HomeController implements NewCoderConstant {
         }
 
         model.addAttribute("disCussPosts",disCussPostsMapList);
+        model.addAttribute("orderMode",orderMode);
         return "/index";
     }
 

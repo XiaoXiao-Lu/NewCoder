@@ -9,7 +9,9 @@ import com.kinnon.service.CommentService;
 import com.kinnon.service.DiscussPostService;
 import com.kinnon.util.HostHolder;
 import com.kinnon.util.NewCoderConstant;
+import com.kinnon.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +38,10 @@ public class CommentController implements NewCoderConstant {
 
     @Autowired
     private EventProducer eventProducer;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
 
     @PostMapping("/add/{discussPostId}")
     public String addComment(@PathVariable("discussPostId") int discussPostId, Comment comment) {
@@ -71,6 +77,9 @@ public class CommentController implements NewCoderConstant {
                     .setEntityType(comment.getEntityType())
                     .setEntityId(comment.getEntityId());
             eventProducer.fireEvent(event);
+
+            String redisKey = RedisKeyUtil.getPostScoreKey();
+            redisTemplate.opsForSet().add(redisKey,discussPostId);
 
         }
 

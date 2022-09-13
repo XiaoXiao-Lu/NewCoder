@@ -13,7 +13,7 @@ import java.util.List;
 */
 public interface DiscussPostService extends IService<DiscussPost> {
 
-    List<DiscussPost> getDisCussPosts(int userId,  int offset,  int limit);
+    List<DiscussPost> getDisCussPosts(int userId,  int offset,  int limit,int orderMode);
 
     int getDiscussPostRows( int userId);
 
@@ -27,4 +27,5 @@ public interface DiscussPostService extends IService<DiscussPost> {
 
     public int updateType(int id,int type);
 
+    int updateScore(int postId, double score);
 }
