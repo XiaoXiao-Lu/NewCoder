@@ -45,6 +45,11 @@ public class HomeController implements NewCoderConstant {
     @Autowired
     private HostHolder hostHolder;
 
+    @GetMapping("/")
+    public String root(){
+        return "forward:/index";
+    }
+
 
     @RequestMapping("/index")
     public String getIndexPage(Model model, Page page,@RequestParam(name="orderMode",defaultValue="0") int orderMode){

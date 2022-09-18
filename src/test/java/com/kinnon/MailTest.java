@@ -19,6 +19,6 @@ public class MailTest {
     @Test
     public void test1(){
 
-        mailClient.sendMail("627074396@qq.com","Hello","hahahha");
+        mailClient.sendMail("741551902@qq.com","Hello","jljljl");
     }
 }

@@ -1,4 +1,4 @@
-var context_path = "/newcoder"
+var context_path = ""
 
 window.alert = function(message) {
 	if(!$(".alert-box").length) {

@@ -3,12 +3,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.kinnon</groupId>
-    <artifactId>springboot_project_demo1</artifactId>
+    <artifactId>newcoder</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>springboot_project_demo1</name>
-    <description>springboot_project_demo1</description>
+    <name>newcoder</name>
+    <description>newcoder</description>
+    <packaging>war</packaging>
 
     <properties>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -98,6 +100,13 @@
             <artifactId>caffeine</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-actuator -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+
 
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -138,11 +147,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -158,6 +163,7 @@
     </dependencyManagement>
 
     <build>
+        <finalName>ROOT</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
