@@ -46,7 +46,7 @@ public class SensitiveFilter {
         TrieNode tempNode = rootNode;
         for (int i = 0; i < keyWord.length(); i++) {
             Character c = keyWord.charAt(i);
-            TrieNode subNode = rootNode.getSubNode(c);
+            TrieNode subNode = tempNode.getSubNode(c);
             if (subNode == null) {
                 subNode = new TrieNode();
                 tempNode.addSubNode(c, subNode);
